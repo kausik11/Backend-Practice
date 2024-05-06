@@ -13,8 +13,17 @@ const server = http.createServer((req,res)=>{
         res.end('hello from Contactus side');
      }else if(req.url === '/userapi'){
         fs.readFile(`${__dirname}/UserApi/userapi.json`,'utf-8',(err,data)=>{
-            // console.log(data);
-            res.end(data)
+            if (err) {
+                console.log(err)
+            }
+            // console.log(typeof(data));
+            const objData = JSON.parse(data);
+            let response = 0;
+            objData.forEach(ele => {
+               
+                response += `${ele.id},${ele.first_name}\n`
+            });
+            res.writeHead(200,{'Content-type':'application/json'},).end(response);
         })
         // res.end('hello from user Api side');
         
